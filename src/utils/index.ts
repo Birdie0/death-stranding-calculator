@@ -63,6 +63,10 @@ export function formatResult(t: [number, number]): string {
   return count > 1 ? `${size}x${count}` : `${size}`
 }
 
-export function isApproximate(arr: [number, number][], sum: number): boolean {
-  return sum !== arr.reduce((sum, [size, count]) => sum + size * count, 0)
+export function isApproximate(
+  arr: [number, number][],
+  total: number,
+): string | number {
+  const sum = arr.reduce((sum, [size, count]) => sum + size * count, 0)
+  return total === sum ? total : `${total}* (${sum})`
 }

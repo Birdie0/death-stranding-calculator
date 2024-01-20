@@ -152,10 +152,7 @@ function App() {
               {memory.map(([type, total, resources], index) => (
                 <tr key={index}>
                   <td>{type}</td>
-                  <td>
-                    {total}
-                    {isApproximate(resources, total) && '*'}
-                  </td>
+                  <td>{isApproximate(resources, total)}</td>
                   <td>{resources.map((v) => formatResult(v)).join(' + ')}</td>
                   <td>
                     <button
@@ -189,10 +186,7 @@ function App() {
               {totals.map(([type, total, resources], index) => (
                 <tr key={index}>
                   <td>{type}</td>
-                  <td>
-                    {total}
-                    {isApproximate(resources, total) && '*'}
-                  </td>
+                  <td>{isApproximate(resources, total)}</td>
                   <td>{resources.map((v) => formatResult(v)).join(' + ')}</td>
                 </tr>
               ))}
