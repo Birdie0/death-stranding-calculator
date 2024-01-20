@@ -1,8 +1,9 @@
+import type { FormEvent } from 'react'
 import { useMemo, useState } from 'react'
 import { Input } from './components/input'
 import { Select } from './components/select'
+import type { Material } from './utils'
 import {
-  Material,
   calculateRequirements,
   formatResult,
   isApproximate,
@@ -27,7 +28,9 @@ function App() {
     [materialType, remaining],
   )
 
-  function handleSave() {
+  function handleSave(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault()
+
     if (requirements.length === 0) return
 
     const materialTypeLabel = materials.find(([, b]) => b === materialType)![0]
@@ -64,9 +67,9 @@ function App() {
     }
 
     return Object.entries(result).map(([material, [total, resources]]) => {
-      const res = Object.entries(resources)
-        .reverse()
-        .map(([a, b]) => [Number(a), b] as [number, number])
+      const res = Object.entries(resources).map(
+        ([a, b]) => [Number(a), b] as [number, number],
+      )
       return [material, total, res]
     })
   }, [memory])
@@ -100,38 +103,38 @@ function App() {
         </p>
       </Details>
 
-      <Select
-        label="Material type"
-        options={materials}
-        value={materialType}
-        onChange={(e) => setMaterialType(e.target.value as Material)}
-      />
-      <Input
-        label="Provided"
-        type="number"
-        min={0}
-        inputMode="numeric"
-        value={provided}
-        onChange={(e) => setProvided(e.target.valueAsNumber)}
-      />
-      <Input
-        label="Required"
-        type="number"
-        min={0}
-        inputMode="numeric"
-        value={required}
-        onChange={(e) => setRequired(e.target.valueAsNumber)}
-      />
+      <form onSubmit={handleSave}>
+        <Select
+          label="Material type"
+          options={materials}
+          value={materialType}
+          onChange={(e) => setMaterialType(e.target.value as Material)}
+        />
+        <Input
+          label="Provided"
+          type="number"
+          min={0}
+          inputMode="numeric"
+          value={provided}
+          onChange={(e) => setProvided(e.target.valueAsNumber)}
+        />
+        <Input
+          label="Required"
+          type="number"
+          min={0}
+          inputMode="numeric"
+          value={required}
+          onChange={(e) => setRequired(e.target.valueAsNumber)}
+        />
 
-      <p>Remaning: {remaining}</p>
-      <ul>
-        {requirements.map((v, i) => (
-          <li key={i}>{formatResult(v)}</li>
-        ))}
-      </ul>
-      <button type="button" onClick={handleSave}>
-        Save
-      </button>
+        <p>Remaning: {remaining}</p>
+        <ul>
+          {requirements.map((v, i) => (
+            <li key={i}>{formatResult(v)}</li>
+          ))}
+        </ul>
+        <button>Save</button>
+      </form>
 
       {memory.length > 0 && (
         <>

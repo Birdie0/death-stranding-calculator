@@ -25,6 +25,7 @@ module.exports = {
       'warn',
       { allowConstantExport: true },
     ],
+    '@typescript-eslint/consistent-type-imports': 'error'
   },
   reportUnusedDisableDirectives: true,
   parserOptions: {

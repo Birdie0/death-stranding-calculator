@@ -55,7 +55,7 @@ export function calculateRequirements(
     }
   }
 
-  return arr
+  return arr.reverse()
 }
 
 export function formatResult(t: [number, number]): string {
