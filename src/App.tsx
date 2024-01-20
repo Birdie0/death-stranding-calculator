@@ -64,9 +64,9 @@ function App() {
     }
 
     return Object.entries(result).map(([material, [total, resources]]) => {
-      const res = Object.entries(resources).map(
-        ([a, b]) => [Number(a), b] as [number, number],
-      )
+      const res = Object.entries(resources)
+        .reverse()
+        .map(([a, b]) => [Number(a), b] as [number, number])
       return [material, total, res]
     })
   }, [memory])
