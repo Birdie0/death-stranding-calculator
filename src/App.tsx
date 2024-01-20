@@ -111,6 +111,7 @@ function App() {
         label="Provided"
         type="number"
         min={0}
+        inputMode="numeric"
         value={provided}
         onChange={(e) => setProvided(e.target.valueAsNumber)}
       />
@@ -118,6 +119,7 @@ function App() {
         label="Required"
         type="number"
         min={0}
+        inputMode="numeric"
         value={required}
         onChange={(e) => setRequired(e.target.valueAsNumber)}
       />
