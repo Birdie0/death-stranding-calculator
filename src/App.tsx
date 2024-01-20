@@ -10,13 +10,15 @@ import {
 } from './utils'
 import { Details } from './components/details'
 import styles from './App.module.css'
+import { useMemoryStore } from './stores/memory'
+import { useShallow } from 'zustand/shallow'
 
 function App() {
   const [materialType, setMaterialType] = useState<Material>(materials[0][1])
   const [provided, setProvided] = useState(0)
   const [required, setRequired] = useState(0)
-  const [memory, setMemory] = useState<[string, number, [number, number][]][]>(
-    [],
+  const [memory, setMemory] = useMemoryStore(
+    useShallow((state) => [state.memory, state.setMemory]),
   )
 
   const remaining = Math.max(0, required - provided)
@@ -30,10 +32,7 @@ function App() {
 
     const materialTypeLabel = materials.find(([, b]) => b === materialType)![0]
 
-    setMemory(() => [
-      ...memory,
-      [materialTypeLabel, remaining, [...requirements]],
-    ])
+    setMemory([...memory, [materialTypeLabel, remaining, [...requirements]]])
     setProvided(0)
     setRequired(0)
   }
