@@ -5,6 +5,7 @@ import { Select } from './components/select'
 import type { Material } from './utils'
 import {
   calculateRequirements,
+  calculateTotals,
   formatResult,
   isApproximate,
   materials,
@@ -13,7 +14,7 @@ import { Details } from './components/details'
 import styles from './App.module.css'
 import { useMemoryStore } from './stores/memory'
 import { useShallow } from 'zustand/shallow'
-import type { RequirementItem, ResourceItem } from './types'
+import type { RequirementItem } from './types'
 
 function App() {
   const [materialType, setMaterialType] = useState<Material>(materials[0][1])
@@ -54,31 +55,10 @@ function App() {
     clearMemory()
   }
 
-  const totals: RequirementItem[] = useMemo(() => {
-    const result: Record<string, [number, Record<number, number>]> = {}
-
-    for (const [material, total, resources] of memory) {
-      if (!result[material]) {
-        result[material] = [0, {}]
-      }
-
-      result[material][0] += total
-      for (const [size, count] of resources) {
-        if (!result[material][1][size]) {
-          result[material][1][size] = 0
-        }
-
-        result[material][1][size] += count
-      }
-    }
-
-    return Object.entries(result).map(([material, [total, resources]]) => {
-      const res = Object.entries(resources).map(
-        ([a, b]) => [Number(a), b] satisfies ResourceItem,
-      )
-      return [material, total, res]
-    })
-  }, [memory])
+  const totals: RequirementItem[] = useMemo(
+    () => calculateTotals(memory),
+    [memory],
+  )
 
   return (
     <>

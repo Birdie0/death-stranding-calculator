@@ -1,4 +1,4 @@
-import type { ResourceItem } from '../types'
+import type { RequirementItem, ResourceItem } from '../types'
 
 const chunks = [20, 16, 12, 8, 4, 2, 1] as const
 export const materials = [
@@ -73,4 +73,30 @@ export function isApproximate(
 ): string | number {
   const sum = arr.reduce((sum, [size, count]) => sum + size * count, 0)
   return total === sum ? total : `${total}* (${sum})`
+}
+
+export function calculateTotals(memory: RequirementItem[]): RequirementItem[] {
+  const result: Record<string, [number, Record<number, number>]> = {}
+
+  for (const [material, total, resources] of memory) {
+    if (!result[material]) {
+      result[material] = [0, {}]
+    }
+
+    result[material][0] += total
+    for (const [size, count] of resources) {
+      if (!result[material][1][size]) {
+        result[material][1][size] = 0
+      }
+
+      result[material][1][size] += count
+    }
+  }
+
+  return Object.entries(result).map(([material, [total, resources]]) => {
+    const res = Object.entries(resources).map(
+      ([a, b]) => [Number(a), b] satisfies ResourceItem,
+    )
+    return [material, total, res]
+  })
 }
