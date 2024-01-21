@@ -1,3 +1,5 @@
+import type { ResourceItem } from '../types'
+
 const chunks = [20, 16, 12, 8, 4, 2, 1] as const
 export const materials = [
   ['Ceramics', 'ceramics'],
@@ -13,7 +15,7 @@ export type Material = (typeof materials)[number][1]
 export function calculateRequirements(
   amount: number,
   type: Material,
-): [number, number][] {
+): ResourceItem[] {
   if (amount === 0) {
     return []
   }
@@ -23,7 +25,7 @@ export function calculateRequirements(
   }
 
   let divider = 1
-  const arr: [number, number][] = []
+  const arr: ResourceItem[] = []
 
   switch (type) {
     case 'chemicals': {
@@ -58,13 +60,13 @@ export function calculateRequirements(
   return arr.reverse()
 }
 
-export function formatResult(t: [number, number]): string {
+export function formatResult(t: ResourceItem): string {
   const [size, count] = t
   return count > 1 ? `${size}x${count}` : `${size}`
 }
 
 export function isApproximate(
-  arr: [number, number][],
+  arr: ResourceItem[],
   total: number,
 ): string | number {
   const sum = arr.reduce((sum, [size, count]) => sum + size * count, 0)

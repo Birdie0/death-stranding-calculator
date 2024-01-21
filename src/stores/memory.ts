@@ -1,9 +1,12 @@
 import { create } from 'zustand'
 import { devtools, persist } from 'zustand/middleware'
+import type { RequirementItem } from '../types'
 
 interface MemoryState {
-  memory: [string, number, [number, number][]][]
-  setMemory: (value: [string, number, [number, number][]][]) => void
+  memory: RequirementItem[]
+  addItem: (value: RequirementItem) => void
+  removeItem: (index: number) => void
+  clearMemory: () => void
 }
 
 export const useMemoryStore = create<MemoryState>()(
@@ -11,9 +14,16 @@ export const useMemoryStore = create<MemoryState>()(
     persist(
       (set) => ({
         memory: [],
-        setMemory: (value) => set(() => ({ memory: value })),
+        clearMemory: () => set(() => ({ memory: [] })),
+        addItem: (value) =>
+          set((state) => ({ memory: [...state.memory, value] })),
+        removeItem: (index) =>
+          set((state) => ({
+            memory: state.memory.filter((_v, i) => i !== index),
+          })),
       }),
       { name: 'memoryStore' },
     ),
+    { name: 'memoryStore' },
   ),
 )

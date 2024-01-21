@@ -13,13 +13,19 @@ import { Details } from './components/details'
 import styles from './App.module.css'
 import { useMemoryStore } from './stores/memory'
 import { useShallow } from 'zustand/shallow'
+import type { RequirementItem, ResourceItem } from './types'
 
 function App() {
   const [materialType, setMaterialType] = useState<Material>(materials[0][1])
   const [provided, setProvided] = useState(0)
   const [required, setRequired] = useState(0)
-  const [memory, setMemory] = useMemoryStore(
-    useShallow((state) => [state.memory, state.setMemory]),
+  const [memory, addItem, removeItem, clearMemory] = useMemoryStore(
+    useShallow((state) => [
+      state.memory,
+      state.addItem,
+      state.removeItem,
+      state.clearMemory,
+    ]),
   )
 
   const remaining = Math.max(0, required - provided)
@@ -35,20 +41,20 @@ function App() {
 
     const materialTypeLabel = materials.find(([, b]) => b === materialType)![0]
 
-    setMemory([...memory, [materialTypeLabel, remaining, [...requirements]]])
+    addItem([materialTypeLabel, remaining, [...requirements]])
     setProvided(0)
     setRequired(0)
   }
 
   function handleRemove(index: number) {
-    setMemory(memory.filter((_v, i) => i !== index))
+    removeItem(index)
   }
 
   function handleClear() {
-    setMemory([])
+    clearMemory()
   }
 
-  const totals: [string, number, [number, number][]][] = useMemo(() => {
+  const totals: RequirementItem[] = useMemo(() => {
     const result: Record<string, [number, Record<number, number>]> = {}
 
     for (const [material, total, resources] of memory) {
@@ -68,7 +74,7 @@ function App() {
 
     return Object.entries(result).map(([material, [total, resources]]) => {
       const res = Object.entries(resources).map(
-        ([a, b]) => [Number(a), b] as [number, number],
+        ([a, b]) => [Number(a), b] satisfies ResourceItem,
       )
       return [material, total, res]
     })
@@ -80,10 +86,9 @@ function App() {
 
       <Details summary="How to use?">
         <p>
-          You know that feel when you look at numbers under road construction or
-          planning to build multiple structures and get confused very quickly at
-          how many resource containers you need in total? Well, fear no more,
-          this little tool will help you.
+          Ever experienced the feeling of confusion while planning to build
+          multiple structures? Never able to determine how many Resource
+          Containers you&apos;ll need? Well worry not, this tool is here!
         </p>
         <p>
           Just pick type of material, enter numbers of provided and required
