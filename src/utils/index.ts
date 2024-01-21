@@ -21,7 +21,7 @@ export function calculateRequirements(
   }
 
   if (type === 'chiral_crystals') {
-    return [[amount, 1]]
+    return [[1, amount]]
   }
 
   let divider = 1
@@ -60,9 +60,11 @@ export function calculateRequirements(
   return arr.reverse()
 }
 
-export function formatResult(t: ResourceItem): string {
-  const [size, count] = t
-  return count > 1 ? `${size}x${count}` : `${size}`
+export function formatResult([size, count]: ResourceItem): string | number {
+  if (size === 1) {
+    return count
+  }
+  return count > 1 ? `${size}x${count}` : size
 }
 
 export function isApproximate(
