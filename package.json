@@ -10,26 +10,29 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "million": "^3.0.3",
+    "million": "^3.0.6",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "water.css": "^2.1.1",
     "zustand": "next"
   },
   "devDependencies": {
-    "@types/react": "^18.2.58",
-    "@types/react-dom": "^18.2.19",
-    "@typescript-eslint/eslint-plugin": "^7.0.2",
-    "@typescript-eslint/parser": "^7.0.2",
+    "@types/react": "^18.2.74",
+    "@types/react-dom": "^18.2.23",
+    "@typescript-eslint/eslint-plugin": "^7.5.0",
+    "@typescript-eslint/parser": "^7.5.0",
     "@vitejs/plugin-react-swc": "^3.6.0",
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.1.3",
-    "eslint-plugin-react": "^7.33.2",
+    "eslint-plugin-react": "^7.34.1",
     "eslint-plugin-react-hooks": "^4.6.0",
-    "eslint-plugin-react-refresh": "^0.4.5",
+    "eslint-plugin-react-refresh": "^0.4.6",
     "prettier": "^3.2.5",
-    "typescript": "^5.3.3",
-    "vite": "^5.1.4"
+    "typescript": "^5.4.3",
+    "vite": "^5.2.7"
+  },
+  "engines": {
+    "node": "20.x"
   }
 }
