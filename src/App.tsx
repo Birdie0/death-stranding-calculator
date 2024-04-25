@@ -174,14 +174,16 @@ function App() {
                 <th>Material</th>
                 <th>Total</th>
                 <th>Containers</th>
+                <th>Notes</th>
               </tr>
             </thead>
             <tbody>
-              {totals.map(([type, total, resources], index) => (
+              {totals.map(([type, total, resources, notes], index) => (
                 <tr key={index}>
                   <td>{type}</td>
                   <td>{isApproximate(resources, total)}</td>
                   <td>{resources.map((v) => formatResult(v)).join(' + ')}</td>
+                  <td>{notes}</td>
                 </tr>
               ))}
             </tbody>

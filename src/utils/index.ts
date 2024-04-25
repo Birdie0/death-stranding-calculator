@@ -76,14 +76,17 @@ export function isApproximate(
 }
 
 export function calculateTotals(memory: RequirementItem[]): RequirementItem[] {
-  const result: Record<string, [number, Record<number, number>]> = {}
+  const result: Record<string, [number, Record<number, number>, string[]]> = {}
 
-  for (const [material, total, resources] of memory) {
+  for (const [material, total, resources, note] of memory) {
     if (!result[material]) {
-      result[material] = [0, {}]
+      result[material] = [0, {}, []]
     }
 
     result[material][0] += total
+    if (note) {
+      result[material][2].push(note)
+    }
     for (const [size, count] of resources) {
       if (!result[material][1][size]) {
         result[material][1][size] = 0
@@ -93,10 +96,10 @@ export function calculateTotals(memory: RequirementItem[]): RequirementItem[] {
     }
   }
 
-  return Object.entries(result).map(([material, [total, resources]]) => {
+  return Object.entries(result).map(([material, [total, resources, notes]]) => {
     const res = Object.entries(resources).map(
       ([a, b]) => [Number(a), b] satisfies ResourceItem,
     )
-    return [material, total, res]
+    return [material, total, res, notes.join(', ')]
   })
 }
