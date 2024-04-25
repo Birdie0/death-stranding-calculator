@@ -138,54 +138,62 @@ function App() {
       </Details>
 
       <form onSubmit={handlePreset}>
-        <Select
-          label="Preset"
-          options={presetOptions}
-          value={selectedPreset}
-          onChange={(e) => setSelectedPreset(e.target.value)}
-        />
+        <fieldset>
+          <legend>Use preset</legend>
 
-        <br />
+          <Select
+            label="Preset"
+            options={presetOptions}
+            value={selectedPreset}
+            onChange={(e) => setSelectedPreset(e.target.value)}
+          />
 
-        <button type="submit">Add</button>
+          <br />
+
+          <button type="submit">Add</button>
+        </fieldset>
       </form>
 
       <form onSubmit={handleSave}>
-        <Select
-          label="Material type"
-          options={materials}
-          value={materialType}
-          onChange={(e) => setMaterialType(e.target.value as Material)}
-        />
-        <Input
-          label="Provided"
-          type="number"
-          min={0}
-          inputMode="numeric"
-          value={provided}
-          onChange={(e) => setProvided(e.target.valueAsNumber)}
-        />
-        <Input
-          label="Required"
-          type="number"
-          min={0}
-          inputMode="numeric"
-          value={required}
-          onChange={(e) => setRequired(e.target.valueAsNumber)}
-        />
-        <Input
-          label="Note"
-          value={note}
-          onChange={(e) => setNote(e.target.value)}
-        />
+        <fieldset>
+          <legend>Add materials manually</legend>
 
-        <p>Remaning: {remaining}</p>
-        <ul>
-          {requirements.map((v, i) => (
-            <li key={i}>{formatResult(v)}</li>
-          ))}
-        </ul>
-        <button>Save</button>
+          <Select
+            label="Material type"
+            options={materials}
+            value={materialType}
+            onChange={(e) => setMaterialType(e.target.value as Material)}
+          />
+          <Input
+            label="Provided"
+            type="number"
+            min={0}
+            inputMode="numeric"
+            value={provided}
+            onChange={(e) => setProvided(e.target.valueAsNumber)}
+          />
+          <Input
+            label="Required"
+            type="number"
+            min={0}
+            inputMode="numeric"
+            value={required}
+            onChange={(e) => setRequired(e.target.valueAsNumber)}
+          />
+          <Input
+            label="Note"
+            value={note}
+            onChange={(e) => setNote(e.target.value)}
+          />
+
+          <p>Remaning: {remaining}</p>
+          <ul>
+            {requirements.map((v, i) => (
+              <li key={i}>{formatResult(v)}</li>
+            ))}
+          </ul>
+          <button>Save</button>
+        </fieldset>
       </form>
 
       {memory.length > 0 && (
