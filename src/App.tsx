@@ -20,6 +20,7 @@ function App() {
   const [materialType, setMaterialType] = useState<Material>(materials[0][1])
   const [provided, setProvided] = useState(0)
   const [required, setRequired] = useState(0)
+  const [note, setNote] = useState('')
   const [memory, addItem, removeItem, clearMemory] = useMemoryStore(
     useShallow((state) => [
       state.memory,
@@ -42,9 +43,10 @@ function App() {
 
     const materialTypeLabel = materials.find(([, b]) => b === materialType)![0]
 
-    addItem([materialTypeLabel, remaining, [...requirements]])
+    addItem([materialTypeLabel, remaining, [...requirements], note])
     setProvided(0)
     setRequired(0)
+    setNote('')
   }
 
   function handleRemove(index: number) {
@@ -111,6 +113,11 @@ function App() {
           value={required}
           onChange={(e) => setRequired(e.target.valueAsNumber)}
         />
+        <Input
+          label="Note"
+          value={note}
+          onChange={(e) => setNote(e.target.value)}
+        />
 
         <p>Remaning: {remaining}</p>
         <ul>
@@ -130,15 +137,17 @@ function App() {
                 <th>Material</th>
                 <th>Total</th>
                 <th>Containers</th>
+                <th>Note</th>
                 <th>Remove?</th>
               </tr>
             </thead>
             <tbody>
-              {memory.map(([type, total, resources], index) => (
+              {memory.map(([type, total, resources, note], index) => (
                 <tr key={index}>
                   <td>{type}</td>
                   <td>{isApproximate(resources, total)}</td>
                   <td>{resources.map((v) => formatResult(v)).join(' + ')}</td>
+                  <td>{note}</td>
                   <td>
                     <button
                       className={styles.remove_btn}

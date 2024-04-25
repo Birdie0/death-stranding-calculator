@@ -1,5 +1,5 @@
 export type ResourceItem = [number, number]
-export type RequirementItem = [string, number, ResourceItem[]]
+export type RequirementItem = [string, number, ResourceItem[], string]
 
 // export type Material =
 //   | 'ceramics'
