@@ -12,6 +12,11 @@ export const materials = [
 
 export type Material = (typeof materials)[number][1]
 
+export interface Preset {
+  name: string
+  resources: [Material, number][]
+}
+
 export function calculateRequirements(
   amount: number,
   type: Material,
@@ -71,7 +76,10 @@ export function isApproximate(
   arr: ResourceItem[],
   total: number,
 ): string | number {
-  const sum = arr.reduce((sum, [size, count]) => sum + size * count, 0)
+  const sum = arr.reduce(
+    (totalSum, [size, count]) => totalSum + size * count,
+    0,
+  )
   return total === sum ? total : `${total}* (${sum})`
 }
 

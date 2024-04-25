@@ -2,7 +2,7 @@ import type { FormEvent } from 'react'
 import { useMemo, useState } from 'react'
 import { Input } from './components/input'
 import { Select } from './components/select'
-import type { Material } from './utils'
+import type { Material, Preset } from './utils'
 import {
   calculateRequirements,
   calculateTotals,
@@ -15,12 +15,17 @@ import styles from './App.module.css'
 import { useMemoryStore } from './stores/memory'
 import { useShallow } from 'zustand/shallow'
 import type { RequirementItem } from './types'
+import { presets } from './utils/presets'
 
 function App() {
   const [materialType, setMaterialType] = useState<Material>(materials[0][1])
   const [provided, setProvided] = useState(0)
   const [required, setRequired] = useState(0)
   const [note, setNote] = useState('')
+  const [selectedPreset, setSelectedPreset] = useState(
+    () => presets[0].structures[0].name,
+  )
+
   const [memory, addItem, removeItem, clearMemory] = useMemoryStore(
     useShallow((state) => [
       state.memory,
@@ -57,10 +62,52 @@ function App() {
     clearMemory()
   }
 
+  const presetOptions = useMemo(() => {
+    return presets.map(
+      ({ name, structures }) =>
+        [
+          name,
+          structures.map(
+            ({ name: nestedName }) => [nestedName, nestedName] as const,
+          ),
+        ] as const,
+    )
+  }, [])
+
+  const availablePresets = useMemo(() => {
+    const map = new Map<Preset['name'], Preset['resources']>()
+
+    for (const { structures } of presets) {
+      for (const { name, resources } of structures) {
+        map.set(name, resources)
+      }
+    }
+
+    return map
+  }, [])
+
   const totals: RequirementItem[] = useMemo(
     () => calculateTotals(memory),
     [memory],
   )
+
+  function handlePreset(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault()
+
+    const selectedPresetResources = availablePresets.get(selectedPreset)
+    if (selectedPresetResources) {
+      for (const [material, amount] of selectedPresetResources) {
+        const materialLabel = materials.find(([, b]) => b === material)![0]
+
+        addItem([
+          materialLabel,
+          amount,
+          calculateRequirements(amount, material),
+          selectedPreset,
+        ])
+      }
+    }
+  }
 
   return (
     <>
@@ -89,6 +136,19 @@ function App() {
           </a>
         </p>
       </Details>
+
+      <form onSubmit={handlePreset}>
+        <Select
+          label="Preset"
+          options={presetOptions}
+          value={selectedPreset}
+          onChange={(e) => setSelectedPreset(e.target.value)}
+        />
+
+        <br />
+
+        <button type="submit">Add</button>
+      </form>
 
       <form onSubmit={handleSave}>
         <Select
@@ -142,12 +202,12 @@ function App() {
               </tr>
             </thead>
             <tbody>
-              {memory.map(([type, total, resources, note], index) => (
+              {memory.map(([type, total, resources, savedNote], index) => (
                 <tr key={index}>
                   <td>{type}</td>
                   <td>{isApproximate(resources, total)}</td>
                   <td>{resources.map((v) => formatResult(v)).join(' + ')}</td>
-                  <td>{note}</td>
+                  <td>{savedNote}</td>
                   <td>
                     <button
                       className={styles.remove_btn}

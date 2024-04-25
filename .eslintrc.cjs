@@ -17,6 +17,7 @@ module.exports = {
     'prettier'
   ],
   rules: {
+    'no-shadow': 'error',
     'prettier/prettier': ['error', {
         semi: false,
         singleQuote: true
