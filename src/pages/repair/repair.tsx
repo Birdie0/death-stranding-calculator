@@ -33,7 +33,7 @@ export function Repair() {
 
   const maxDurability = durabilityPerLevel[level - 1]
   const repairableDurability = maxDurability - durability
-  const percentage = `${Math.floor((durability / maxDurability) * 100)}%`
+  const percentage = `${100 - Math.floor((durability / maxDurability) * 100)}%`
   const materialsNeeded = Math.floor(repairableDurability / 240)
 
   const results = useMemo(() => {
