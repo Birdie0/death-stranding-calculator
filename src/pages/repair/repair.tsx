@@ -165,6 +165,10 @@ export function Repair() {
             <li>Materials needed: {materialsNeeded}</li>
           </ul>
 
+          <p>
+            To restore full durability provide one of the next amount of materials:
+          </p>
+
           <ul>
             {results.map(([label, result], index) => (
               <li key={index}>
