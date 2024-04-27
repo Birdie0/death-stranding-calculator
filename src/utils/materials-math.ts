@@ -12,9 +12,11 @@ export const materials = [
 
 export type Material = (typeof materials)[number][1]
 
-export interface Preset {
+export interface Structure {
   name: string
   resources: [Material, number][]
+  repairMaterials: Material[]
+  level: number
 }
 
 export function calculateRequirements(
@@ -53,12 +55,13 @@ export function calculateRequirements(
   }
 
   // count required number of chunks
-  amount = Math.ceil(amount / divider)
+  let remaining = amount
+  remaining = Math.ceil(remaining / divider)
   for (const chunk of chunks) {
-    const boxes = Math.floor(amount / chunk)
-    if (boxes > 0) {
-      arr.push([chunk * divider, boxes])
-      amount -= boxes * chunk
+    const units = Math.floor(remaining / chunk)
+    if (units > 0) {
+      arr.push([chunk * divider, units])
+      remaining -= units * chunk
     }
   }
 

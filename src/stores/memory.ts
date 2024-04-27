@@ -19,7 +19,7 @@ export const useMemoryStore = create<MemoryState>()(
           set((state) => ({ memory: [...state.memory, value] })),
         removeItem: (index) =>
           set((state) => ({
-            memory: state.memory.filter((_v, i) => i !== index),
+            memory: state.memory.filter((_v, itemIndex) => itemIndex !== index),
           })),
       }),
       { name: 'memoryStore' },

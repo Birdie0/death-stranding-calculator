@@ -1,29 +1,29 @@
 import type { FormEvent } from 'react'
 import { useMemo, useState } from 'react'
-import { Input } from './components/input'
-import { Select } from './components/select'
-import type { Material, Preset } from './utils'
+import { useShallow } from 'zustand/shallow'
+import { Details, Input, Select } from '../../components'
+import { useMemoryStore } from '../../stores/memory'
+import type { RequirementItem } from '../../types'
+import type { Material } from '../../utils/materials-math'
 import {
   calculateRequirements,
   calculateTotals,
   formatResult,
   isApproximate,
   materials,
-} from './utils'
-import { Details } from './components/details'
-import styles from './App.module.css'
-import { useMemoryStore } from './stores/memory'
-import { useShallow } from 'zustand/shallow'
-import type { RequirementItem } from './types'
-import { presets } from './utils/presets'
+} from '../../utils/materials-math'
+import { structures } from '../../utils/structures'
 
-function App() {
+import { availablePresets, presetOptions } from '../../utils/data'
+import styles from './calculator.module.css'
+
+export function Calculator() {
   const [materialType, setMaterialType] = useState<Material>(materials[0][1])
   const [provided, setProvided] = useState(0)
   const [required, setRequired] = useState(0)
   const [note, setNote] = useState('')
   const [selectedPreset, setSelectedPreset] = useState(
-    () => presets[0].structures[0].name,
+    () => structures[0].items[0].name,
   )
 
   const [memory, addItem, removeItem, clearMemory] = useMemoryStore(
@@ -46,12 +46,14 @@ function App() {
 
     if (requirements.length === 0) return
 
-    const materialTypeLabel = materials.find(([, b]) => b === materialType)![0]
+    const materialTypeLabel = materials.find(([, b]) => b === materialType)?.[0]
 
-    addItem([materialTypeLabel, remaining, [...requirements], note])
-    setProvided(0)
-    setRequired(0)
-    setNote('')
+    if (materialTypeLabel) {
+      addItem([materialTypeLabel, remaining, [...requirements], note])
+      setProvided(0)
+      setRequired(0)
+      setNote('')
+    }
   }
 
   function handleRemove(index: number) {
@@ -62,30 +64,6 @@ function App() {
     clearMemory()
   }
 
-  const presetOptions = useMemo(() => {
-    return presets.map(
-      ({ name, structures }) =>
-        [
-          name,
-          structures.map(
-            ({ name: nestedName }) => [nestedName, nestedName] as const,
-          ),
-        ] as const,
-    )
-  }, [])
-
-  const availablePresets = useMemo(() => {
-    const map = new Map<Preset['name'], Preset['resources']>()
-
-    for (const { structures } of presets) {
-      for (const { name, resources } of structures) {
-        map.set(name, resources)
-      }
-    }
-
-    return map
-  }, [])
-
   const totals: RequirementItem[] = useMemo(
     () => calculateTotals(memory),
     [memory],
@@ -94,17 +72,19 @@ function App() {
   function handlePreset(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
 
-    const selectedPresetResources = availablePresets.get(selectedPreset)
-    if (selectedPresetResources) {
-      for (const [material, amount] of selectedPresetResources) {
-        const materialLabel = materials.find(([, b]) => b === material)![0]
+    const preset = availablePresets.get(selectedPreset)
+    if (preset) {
+      for (const [material, amount] of preset.resources) {
+        const materialLabel = materials.find(([, b]) => b === material)?.[0]
 
-        addItem([
-          materialLabel,
-          amount,
-          calculateRequirements(amount, material),
-          selectedPreset,
-        ])
+        if (materialLabel) {
+          addItem([
+            materialLabel,
+            amount,
+            calculateRequirements(amount, material),
+            selectedPreset,
+          ])
+        }
       }
     }
   }
@@ -139,13 +119,13 @@ function App() {
 
       <form onSubmit={handlePreset}>
         <fieldset>
-          <legend>Use preset</legend>
+          <legend>Use structure preset</legend>
 
           <Select
-            label="Preset"
+            label="Structure"
             options={presetOptions}
             value={selectedPreset}
-            onChange={(e) => setSelectedPreset(e.target.value)}
+            onChange={(event) => setSelectedPreset(event.target.value)}
           />
 
           <br />
@@ -162,7 +142,9 @@ function App() {
             label="Material type"
             options={materials}
             value={materialType}
-            onChange={(e) => setMaterialType(e.target.value as Material)}
+            onChange={(event) =>
+              setMaterialType(event.target.value as Material)
+            }
           />
           <Input
             label="Provided"
@@ -170,7 +152,7 @@ function App() {
             min={0}
             inputMode="numeric"
             value={provided}
-            onChange={(e) => setProvided(e.target.valueAsNumber)}
+            onChange={(event) => setProvided(event.target.valueAsNumber)}
           />
           <Input
             label="Required"
@@ -178,21 +160,21 @@ function App() {
             min={0}
             inputMode="numeric"
             value={required}
-            onChange={(e) => setRequired(e.target.valueAsNumber)}
+            onChange={(event) => setRequired(event.target.valueAsNumber)}
           />
           <Input
             label="Note"
             value={note}
-            onChange={(e) => setNote(e.target.value)}
+            onChange={(event) => setNote(event.target.value)}
           />
 
           <p>Remaning: {remaining}</p>
           <ul>
-            {requirements.map((v, i) => (
-              <li key={i}>{formatResult(v)}</li>
+            {requirements.map((v, index) => (
+              <li key={index}>{formatResult(v)}</li>
             ))}
           </ul>
-          <button>Save</button>
+          <button type="submit">Save</button>
         </fieldset>
       </form>
 
@@ -218,7 +200,8 @@ function App() {
                   <td>{savedNote}</td>
                   <td>
                     <button
-                      className={styles.remove_btn}
+                      type="button"
+                      className={styles.removeBtn}
                       onClick={() => handleRemove(index)}
                     >
                       X
@@ -265,5 +248,3 @@ function App() {
     </>
   )
 }
-
-export default App
