@@ -1,4 +1,5 @@
-import { Redirect, Route, Switch } from 'wouter'
+import { Redirect, Route, Router, Switch } from 'wouter'
+import { useHashLocation } from 'wouter/use-hash-location'
 import { Navbar } from './components/navbar'
 import { Calculator } from './pages/calculator'
 import { Repair } from './pages/repair'
@@ -8,14 +9,16 @@ export function App() {
     <>
       <Navbar />
 
-      <Switch>
-        <Route path="/" component={Calculator} />
-        <Route path="/repair" component={Repair} />
+      <Router hook={useHashLocation}>
+        <Switch>
+          <Route path="/" component={Calculator} />
+          <Route path="/repair" component={Repair} />
 
-        <Route>
-          <Redirect to="/" />
-        </Route>
-      </Switch>
+          <Route>
+            <Redirect to="/" />
+          </Route>
+        </Switch>
+      </Router>
     </>
   )
 }

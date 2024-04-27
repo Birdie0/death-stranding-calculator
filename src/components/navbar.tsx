@@ -1,11 +1,11 @@
-import { useLocation } from 'wouter'
+import { useHashLocation } from 'wouter/use-hash-location'
 const links = [
   ['Calculator', '/'],
   ['Repair (WIP)', '/repair'],
 ] as const
 
 export function Navbar() {
-  const [location, setLocation] = useLocation()
+  const [location, setLocation] = useHashLocation()
 
   return (
     <nav>

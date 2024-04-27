@@ -166,7 +166,8 @@ export function Repair() {
           </ul>
 
           <p>
-            To restore full durability provide one of the next amount of materials:
+            To restore full durability provide one of the next amount of
+            materials:
           </p>
 
           <ul>
