@@ -53,11 +53,11 @@ export function Repair() {
 
       <Details summary="How game works?">
         <p>
-          ⚠️ Disclaimer: Some of this is might be speculation based on my
-          experience with the game.
+          ⚠️ Disclaimer: Some of this is might be incorrect as it's fully based
+          on my experience.
         </p>
 
-        <p>All structures in the game have durability based on level:</p>
+        <p>Durability is solemly based on structure's level:</p>
 
         <ul>
           <li>Level 1: 360,000 points</li>
@@ -66,10 +66,14 @@ export function Repair() {
         </ul>
 
         <p>
-          Durability deteriorates 1 point per second, sometimes it's faster due
-          to active timefall and player with structure being in its region,
-          maybe difficulty effects it too. Basing on this info we can calculate
-          how long structures persist (in-game hours):
+          Durability decreases 1 point per second, active timefall seemingly
+          increases rate, but it affects only structures in visible range,
+          meaning distant structures, even when shown in range active timefall
+          on forecast map, get damage at usual rate. Difficulty likely increases
+          timefall damage even further since containers get damaged faster on
+          higher difficulties but its scale is unknown. Basing on this info we
+          can calculate how long structures would persist if not repaired in
+          time (in in-game hours):
         </p>
 
         <ul>
@@ -78,24 +82,19 @@ export function Repair() {
           <li>Level 3: 250 hours</li>
         </ul>
 
-        <p>Durability can be restores 2 ways:</p>
-
-        <ol>
-          <li>Upgrading structure</li>
-          <li>Repair by providing materials</li>
-        </ol>
-
         <p>
-          Upgrading restores it to maximum value, but can be done limited number
-          of times. On the other hand, repair don't require a lot of effort,
-          sometimes less if you get them repaired by other players.
+          Durability can be restores 2 ways: upgrading and repairing. Upgrading
+          restores durability to next maximum value, but can be done limited
+          number of times. On the other hand, repair requires little of
+          materials, sometimes less if your strucutre get shared with active
+          players and they repair it in time.
         </p>
 
         <p>
           Structures are repaired with providing materials limited to ones used
           for upgrading structure. Repair ratio is the same for all materials:
           240 durability points per 1 material unit, i.e. providing 60 chemicals
-          would restore 14,400 durability points.
+          or chiral crystals both would restore 14,400 durability points.
         </p>
 
         <p>Some facts worth mentioning:</p>
@@ -107,8 +106,12 @@ export function Repair() {
             providing means durability for those got replenished.
           </li>
           <li>
+            Upgrade/repair is not applied to player world in moment, rather in
+            batches, exact logic is unknown.
+          </li>
+          <li>
             Passing the time in timefall shelter during timefall skips 10
-            minutes, resting in shelter, safehouse or center - 30 minutes.
+            minutes, resting in shelter, safehouse or knot - 30 minutes.
           </li>
           <li>
             When durability reaches 90% structure gets repair option available,
