@@ -83,18 +83,17 @@ export function Repair() {
         </ul>
 
         <p>
-          Durability can be restores 2 ways: upgrading and repairing. Upgrading
+          Durability can be restored 2 ways: upgrading and repairing. Upgrading
           restores durability to next maximum value, but can be done limited
-          number of times. On the other hand, repair requires little of
-          materials, sometimes less if your strucutre get shared with active
-          players and they repair it in time.
+          number of times. Repair requires providing materials.
         </p>
 
         <p>
-          Structures are repaired with providing materials limited to ones used
-          for upgrading structure. Repair ratio is the same for all materials:
-          240 durability points per 1 material unit, i.e. providing 60 chemicals
-          or chiral crystals both would restore 14,400 durability points.
+          Materials that can be used for repairing are limited to ones used for
+          upgrading structure (chiral crystals are always an opion). Repair
+          ratio is the same for all materials: 240 durability points per 1
+          material unit, i.e. providing 60 chemicals or 60 chiral crystals both
+          would restore 14,400 durability points.
         </p>
 
         <p>Some facts worth mentioning:</p>
@@ -110,16 +109,18 @@ export function Repair() {
             batches, exact logic is unknown.
           </li>
           <li>
-            Passing the time in timefall shelter during timefall skips 10
-            minutes, resting in shelter, safehouse or knot - 30 minutes.
+            Passing time in Timefall Shelter during timefall fast-forwards 10
+            minutes, resting in shelter or private room - 30 minutes. When menu
+            is opened or any cutscene plays, time is considered stopped.
           </li>
           <li>
-            When durability reaches 90% structure gets repair option available,
-            30% - stops functioning, 0% - gets destroyed.
+            When durability lowers to 90% structure gets repair option
+            available, 29.7% (shown as 29%) - stops functioning, 0% - gets
+            destroyed.
           </li>
           <li>
-            Durability percentage is rounded down, i.e. 91.98% will be displayed
-            as 91%.
+            Durability percentage on map is rounded down, i.e. 91.98% will be
+            displayed as 91%.
           </li>
         </ul>
       </Details>
