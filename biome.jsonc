@@ -6,10 +6,7 @@
   "linter": {
     "enabled": true,
     "rules": {
-      "recommended": true,
-      "suspicious": {
-        "noArrayIndexKey": "off"
-      }
+      "recommended": true
     }
   },
   "formatter": {
@@ -20,5 +17,10 @@
       "semicolons": "asNeeded",
       "quoteStyle": "single"
     }
+  },
+  "vcs": {
+    "enabled": true,
+    "clientKind": "git",
+    "useIgnoreFile": true
   }
 }

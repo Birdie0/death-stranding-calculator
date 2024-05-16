@@ -175,8 +175,8 @@ export function Repair() {
           </p>
 
           <ul>
-            {results.map(([label, result], index) => (
-              <li key={index}>
+            {results.map(([label, result]) => (
+              <li key={label}>
                 {label}:{' '}
                 {result.map((value) => formatResult(value)).join(' + ')}
                 {' = '}

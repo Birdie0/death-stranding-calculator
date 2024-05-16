@@ -88,30 +88,50 @@ export function isApproximate(
 }
 
 export function calculateTotals(memory: RequirementItem[]): RequirementItem[] {
-  const result: Record<string, [number, Record<number, number>, string[]]> = {}
+  const result: Record<
+    string,
+    {
+      total: number
+      resources: Record<number, number>
+      notes: string[]
+    }
+  > = {}
 
-  for (const [material, total, resources, note] of memory) {
-    if (!result[material]) {
-      result[material] = [0, {}, []]
+  for (const { material, total, resources, note } of memory) {
+    if (result[material] === undefined) {
+      result[material] = {
+        total: 0,
+        resources: {},
+        notes: [],
+      }
     }
 
-    result[material][0] += total
-    if (note) {
-      result[material][2].push(note)
+    result[material].total += total
+    if (note.length > 0) {
+      result[material].notes.push(note)
     }
     for (const [size, count] of resources) {
-      if (!result[material][1][size]) {
-        result[material][1][size] = 0
+      if (result[material].resources[size] === undefined) {
+        result[material].resources[size] = 0
       }
 
-      result[material][1][size] += count
+      result[material].resources[size] += count
     }
   }
 
-  return Object.entries(result).map(([material, [total, resources, notes]]) => {
-    const res = Object.entries(resources).map(
-      ([a, b]) => [Number(a), b] satisfies ResourceItem,
-    )
-    return [material, total, res, notes.join(', ')]
-  })
+  return Object.entries(result).map(
+    ([material, { total, resources, notes }]) => {
+      const res = Object.entries(resources).map(
+        ([a, b]) => [Number(a), b] satisfies ResourceItem,
+      )
+
+      return {
+        id: crypto.randomUUID(),
+        material,
+        total,
+        resources: res,
+        note: notes.join(', '),
+      }
+    },
+  )
 }

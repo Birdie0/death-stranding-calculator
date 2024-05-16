@@ -1,5 +1,11 @@
 export type ResourceItem = [number, number]
-export type RequirementItem = [string, number, ResourceItem[], string]
+export interface RequirementItem {
+  id: ReturnType<typeof crypto.randomUUID>
+  material: string
+  total: number
+  resources: ResourceItem[]
+  note: string
+}
 
 // export type Material =
 //   | 'ceramics'

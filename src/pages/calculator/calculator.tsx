@@ -41,23 +41,38 @@ export function Calculator() {
     [materialType, remaining],
   )
 
+  const formattedRequirements = useMemo(
+    () => requirements.map((value) => formatResult(value)),
+    [requirements],
+  )
+
   function handleSave(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
 
-    if (requirements.length === 0) return
+    if (requirements.length === 0) {
+      return
+    }
 
     const materialTypeLabel = materials.find(([, b]) => b === materialType)?.[0]
 
-    if (materialTypeLabel) {
-      addItem([materialTypeLabel, remaining, [...requirements], note])
-      setProvided(0)
-      setRequired(0)
-      setNote('')
+    if (materialTypeLabel === undefined) {
+      return
     }
+
+    addItem({
+      id: crypto.randomUUID(),
+      material: materialTypeLabel,
+      total: remaining,
+      resources: [...requirements],
+      note,
+    })
+    setProvided(0)
+    setRequired(0)
+    setNote('')
   }
 
-  function handleRemove(index: number) {
-    removeItem(index)
+  function handleRemove(id: RequirementItem['id']) {
+    removeItem(id)
   }
 
   function handleClear() {
@@ -73,19 +88,24 @@ export function Calculator() {
     event.preventDefault()
 
     const preset = availablePresets.get(selectedPreset)
-    if (preset) {
-      for (const [material, amount] of preset.resources) {
-        const materialLabel = materials.find(([, b]) => b === material)?.[0]
+    if (preset === undefined) {
+      return
+    }
 
-        if (materialLabel) {
-          addItem([
-            materialLabel,
-            amount,
-            calculateRequirements(amount, material),
-            selectedPreset,
-          ])
-        }
+    for (const [material, amount] of preset.resources) {
+      const materialLabel = materials.find(([, b]) => b === material)?.[0]
+
+      if (materialLabel === undefined) {
+        return
       }
+
+      addItem({
+        id: crypto.randomUUID(),
+        material: materialLabel,
+        total: amount,
+        resources: calculateRequirements(amount, material),
+        note: selectedPreset,
+      })
     }
   }
 
@@ -170,8 +190,8 @@ export function Calculator() {
 
           <p>Remaning: {remaining}</p>
           <ul>
-            {requirements.map((v, index) => (
-              <li key={index}>{formatResult(v)}</li>
+            {formattedRequirements.map((value) => (
+              <li key={value}>{value}</li>
             ))}
           </ul>
           <button type="submit">Save</button>
@@ -192,17 +212,17 @@ export function Calculator() {
               </tr>
             </thead>
             <tbody>
-              {memory.map(([type, total, resources, savedNote], index) => (
-                <tr key={index}>
-                  <td>{type}</td>
+              {memory.map(({ id, material, total, resources, note }) => (
+                <tr key={id}>
+                  <td>{material}</td>
                   <td>{isApproximate(resources, total)}</td>
                   <td>{resources.map((v) => formatResult(v)).join(' + ')}</td>
-                  <td>{savedNote}</td>
+                  <td>{note}</td>
                   <td>
                     <button
                       type="button"
                       className={styles.removeBtn}
-                      onClick={() => handleRemove(index)}
+                      onClick={() => handleRemove(id)}
                     >
                       X
                     </button>
@@ -229,12 +249,12 @@ export function Calculator() {
               </tr>
             </thead>
             <tbody>
-              {totals.map(([type, total, resources, notes], index) => (
-                <tr key={index}>
-                  <td>{type}</td>
+              {totals.map(({ id, material, total, resources, note }) => (
+                <tr key={id}>
+                  <td>{material}</td>
                   <td>{isApproximate(resources, total)}</td>
                   <td>{resources.map((v) => formatResult(v)).join(' + ')}</td>
-                  <td>{notes}</td>
+                  <td>{note}</td>
                 </tr>
               ))}
             </tbody>

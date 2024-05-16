@@ -12,15 +12,15 @@ export function Select({ label, options, ...props }: SelectProps) {
     <label>
       {label}
       <select {...props}>
-        {options.map(([optionLabel, optionValue], index) =>
+        {options.map(([optionLabel, optionValue]) =>
           typeof optionValue === 'string' ? (
-            <option key={index} value={optionValue}>
+            <option key={optionValue} value={optionValue}>
               {optionLabel}
             </option>
           ) : (
-            <optgroup key={index} label={optionLabel}>
-              {optionValue.map(([nestedLabel, nestedValue], nestedIndex) => (
-                <option key={nestedIndex} value={nestedValue}>
+            <optgroup key={optionLabel} label={optionLabel}>
+              {optionValue.map(([nestedLabel, nestedValue]) => (
+                <option key={nestedValue} value={nestedValue}>
                   {nestedLabel}
                 </option>
               ))}
