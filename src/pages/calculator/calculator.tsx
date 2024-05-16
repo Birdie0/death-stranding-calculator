@@ -1,9 +1,10 @@
 import type { FormEvent } from 'react'
 import { useMemo, useState } from 'react'
-import { useShallow } from 'zustand/shallow'
+import { useShallow } from 'zustand/react/shallow'
 import { Details, Input, Select } from '../../components'
 import { useMemoryStore } from '../../stores/memory'
 import type { RequirementItem } from '../../types'
+import { availablePresets, presetOptions } from '../../utils/data'
 import type { Material } from '../../utils/materials-math'
 import {
   calculateRequirements,
@@ -14,7 +15,6 @@ import {
 } from '../../utils/materials-math'
 import { structures } from '../../utils/structures'
 
-import { availablePresets, presetOptions } from '../../utils/data'
 import styles from './calculator.module.css'
 
 export function Calculator() {

@@ -1,6 +1,7 @@
 import type { RequirementItem, ResourceItem } from '../types'
 
 const chunks = [20, 16, 12, 8, 4, 2, 1] as const
+
 export const materials = [
   ['Ceramics', 'ceramics'],
   ['Chemicals', 'chemicals'],
