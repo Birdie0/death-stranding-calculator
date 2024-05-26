@@ -98,12 +98,10 @@ export function calculateTotals(memory: RequirementItem[]): RequirementItem[] {
   > = {}
 
   for (const { material, total, resources, note } of memory) {
-    if (result[material] === undefined) {
-      result[material] = {
-        total: 0,
-        resources: {},
-        notes: [],
-      }
+    result[material] ||= {
+      total: 0,
+      resources: {},
+      notes: [],
     }
 
     result[material].total += total
@@ -111,10 +109,7 @@ export function calculateTotals(memory: RequirementItem[]): RequirementItem[] {
       result[material].notes.push(note)
     }
     for (const [size, count] of resources) {
-      if (result[material].resources[size] === undefined) {
-        result[material].resources[size] = 0
-      }
-
+      result[material].resources[size] ||= 0
       result[material].resources[size] += count
     }
   }

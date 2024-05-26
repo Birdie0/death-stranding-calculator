@@ -55,7 +55,7 @@ export function Calculator() {
 
     const materialTypeLabel = materials.find(([, b]) => b === materialType)?.[0]
 
-    if (materialTypeLabel === undefined) {
+    if (!materialTypeLabel) {
       return
     }
 
@@ -88,14 +88,14 @@ export function Calculator() {
     event.preventDefault()
 
     const preset = availablePresets.get(selectedPreset)
-    if (preset === undefined) {
+    if (!preset) {
       return
     }
 
     for (const [material, amount] of preset.resources) {
       const materialLabel = materials.find(([, b]) => b === material)?.[0]
 
-      if (materialLabel === undefined) {
+      if (!materialLabel) {
         return
       }
 
