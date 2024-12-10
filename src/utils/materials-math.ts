@@ -73,7 +73,7 @@ export function formatResult([size, count]: ResourceItem): string | number {
   if (size === 1) {
     return count
   }
-  return count > 1 ? `${size}x${count}` : size
+  return count > 1 ? `${size}×${count}` : size
 }
 
 export function isApproximate(

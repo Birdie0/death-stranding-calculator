@@ -127,7 +127,7 @@ export function Calculator() {
         <p>
           Click Save to save calculation to memory. In Total section all
           materials will be summed up together with keeping number of required
-          containrers groped. Click Clear to start anew.
+          containers groped. Click Clear to start anew.
         </p>
         <p>
           Made by{' '}
@@ -188,7 +188,7 @@ export function Calculator() {
             onChange={(event) => setNote(event.target.value)}
           />
 
-          <p>Remaning: {remaining}</p>
+          <p>Remaining: {remaining}</p>
           <ul>
             {formattedRequirements.map((value) => (
               <li key={value}>{value}</li>

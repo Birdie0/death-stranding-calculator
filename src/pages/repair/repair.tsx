@@ -51,13 +51,13 @@ export function Repair() {
     <>
       <h1>📦 Death Stranding Structures Repair</h1>
 
-      <Details summary="How game works?">
+      <Details summary="How the game works?">
         <p>
           ⚠️ Disclaimer: Some of this is might be incorrect as it's fully based
           on my experience.
         </p>
 
-        <p>Durability is solemly based on structure's level:</p>
+        <p>Durability is solely based on structure's level:</p>
 
         <ul>
           <li>Level 1: 360,000 points</li>
@@ -90,7 +90,7 @@ export function Repair() {
 
         <p>
           Materials that can be used for repairing are limited to ones used for
-          upgrading structure (chiral crystals are always an opion). Repair
+          upgrading structure (chiral crystals are always an option). Repair
           ratio is the same for all materials: 240 durability points per 1
           material unit, i.e. providing 60 chemicals or 60 chiral crystals both
           would restore 14,400 durability points.
