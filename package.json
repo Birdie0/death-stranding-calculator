@@ -11,19 +11,19 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
     "water.css": "^2.1.1",
     "wouter": "^3.6.0",
     "zustand": "^5.0.3"
   },
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",
-    "@types/react": "^19.0.10",
-    "@types/react-dom": "^19.0.4",
-    "@vitejs/plugin-react-swc": "^3.8.0",
-    "typescript": "~5.7.3",
-    "vite": "^6.2.0"
+    "@types/react": "^19.1.0",
+    "@types/react-dom": "^19.1.1",
+    "@vitejs/plugin-react-swc": "^3.8.1",
+    "typescript": "~5.8.3",
+    "vite": "^6.2.5"
   },
   "engines": {
     "node": "22.x"
