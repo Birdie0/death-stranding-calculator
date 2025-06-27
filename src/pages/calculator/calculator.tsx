@@ -1,5 +1,5 @@
 import type { FormEvent } from 'react'
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useShallow } from 'zustand/react/shallow'
 import { Details, Input, Select } from '../../components'
 import { useMemoryStore } from '../../stores/memory'
@@ -35,6 +35,22 @@ export function Calculator() {
     ]),
   )
 
+  // Create materials array with hotkey information
+  const materialsWithHotkeys = useMemo(() => {
+    const hotkeyMap: Record<Material, string> = {
+      ceramics: 'C',
+      chemicals: 'H',
+      chiral_crystals: 'I',
+      metals: 'M',
+      resins: 'R',
+      special_alloys: 'S',
+    }
+
+    return materials.map(
+      ([label, value]) => [`${label} (${hotkeyMap[value]})`, value] as const,
+    )
+  }, [])
+
   const remaining = Math.max(0, required - provided)
   const requirements = useMemo(
     () => calculateRequirements(remaining, materialType),
@@ -45,6 +61,45 @@ export function Calculator() {
     () => requirements.map((value) => formatResult(value)),
     [requirements],
   )
+
+  // Hotkey handling for material type selection
+  useEffect(() => {
+    function handleKeyDown(event: KeyboardEvent) {
+      // Only handle hotkeys when not typing in input fields
+      if (
+        event.target instanceof HTMLInputElement ||
+        event.target instanceof HTMLTextAreaElement ||
+        event.target instanceof HTMLSelectElement
+      ) {
+        return
+      }
+
+      // Ignore hotkeys when ctrl, alt, or meta keys are pressed
+      if (event.ctrlKey || event.altKey || event.metaKey) {
+        return
+      }
+
+      const key = event.key.toLowerCase()
+
+      const materialMap: Record<string, Material> = {
+        c: 'ceramics',
+        h: 'chemicals',
+        i: 'chiral_crystals',
+        m: 'metals',
+        r: 'resins',
+        s: 'special_alloys',
+      }
+
+      const newMaterial = materialMap[key]
+      if (newMaterial) {
+        setMaterialType(newMaterial)
+        event.preventDefault()
+      }
+    }
+
+    document.addEventListener('keydown', handleKeyDown)
+    return () => document.removeEventListener('keydown', handleKeyDown)
+  }, [])
 
   function handleSave(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
@@ -127,8 +182,32 @@ export function Calculator() {
         <p>
           Click Save to save calculation to memory. In Total section all
           materials will be summed up together with keeping number of required
-          containers groped. Click Clear to start anew.
+          containers grouped. Click Clear to start anew.
         </p>
+        <p>
+          <strong>Hotkeys:</strong> You can quickly change material types using
+          keyboard shortcuts:
+        </p>
+        <ul>
+          <li>
+            <kbd>C</kbd> - Ceramics
+          </li>
+          <li>
+            <kbd>H</kbd> - Chemicals
+          </li>
+          <li>
+            <kbd>I</kbd> - Chiral Crystals
+          </li>
+          <li>
+            <kbd>M</kbd> - Metals
+          </li>
+          <li>
+            <kbd>R</kbd> - Resins
+          </li>
+          <li>
+            <kbd>S</kbd> - Special Alloys
+          </li>
+        </ul>
         <p>
           Made by{' '}
           <a href="https://github.com/Birdie0" target="_blank" rel="noreferrer">
@@ -160,7 +239,7 @@ export function Calculator() {
 
           <Select
             label="Material type"
-            options={materials}
+            options={materialsWithHotkeys}
             value={materialType}
             onChange={(event) =>
               setMaterialType(event.target.value as Material)
@@ -234,7 +313,7 @@ export function Calculator() {
 
           <blockquote>
             <code>*</code> means total amount of resources in the containers is
-            higher that required value because it was rounded up to match
+            higher than required value because it was rounded up to match
             minimal number of containers needed.
           </blockquote>
 
