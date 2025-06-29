@@ -65,11 +65,11 @@ export function Calculator() {
   // Hotkey handling for material type selection
   useEffect(() => {
     function handleKeyDown(event: KeyboardEvent) {
-      // Only handle hotkeys when not typing in input fields
+      // Only handle hotkeys when not typing in text input fields or textareas
       if (
-        event.target instanceof HTMLInputElement ||
         event.target instanceof HTMLTextAreaElement ||
-        event.target instanceof HTMLSelectElement
+        (event.target instanceof HTMLInputElement && 
+         event.target.type !== 'number')
       ) {
         return
       }
