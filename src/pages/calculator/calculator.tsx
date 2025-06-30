@@ -18,7 +18,7 @@ import { structures } from '../../utils/structures'
 import styles from './calculator.module.css'
 
 export function Calculator() {
-  const [materialType, setMaterialType] = useState<Material>(materials[0][1])
+  const [materialType, setMaterialType] = useState<Material>(materials[0].slug)
   const [provided, setProvided] = useState(0)
   const [required, setRequired] = useState(0)
   const [note, setNote] = useState('')
@@ -37,17 +37,9 @@ export function Calculator() {
 
   // Create materials array with hotkey information
   const materialsWithHotkeys = useMemo(() => {
-    const hotkeyMap: Record<Material, string> = {
-      ceramics: 'C',
-      chemicals: 'H',
-      chiral_crystals: 'I',
-      metals: 'M',
-      resins: 'R',
-      special_alloys: 'S',
-    }
-
     return materials.map(
-      ([label, value]) => [`${label} (${hotkeyMap[value]})`, value] as const,
+      ({ label, slug, hotkey }) =>
+        [`${label} (${hotkey.toUpperCase()})`, slug] as const,
     )
   }, [])
 
@@ -68,8 +60,8 @@ export function Calculator() {
       // Only handle hotkeys when not typing in text input fields or textareas
       if (
         event.target instanceof HTMLTextAreaElement ||
-        (event.target instanceof HTMLInputElement && 
-         event.target.type !== 'number')
+        (event.target instanceof HTMLInputElement &&
+          event.target.type !== 'number')
       ) {
         return
       }
@@ -81,16 +73,7 @@ export function Calculator() {
 
       const key = event.key.toLowerCase()
 
-      const materialMap: Record<string, Material> = {
-        c: 'ceramics',
-        h: 'chemicals',
-        i: 'chiral_crystals',
-        m: 'metals',
-        r: 'resins',
-        s: 'special_alloys',
-      }
-
-      const newMaterial = materialMap[key]
+      const newMaterial = materials.find(({ hotkey }) => hotkey === key)?.slug
       if (newMaterial) {
         setMaterialType(newMaterial)
         event.preventDefault()
@@ -108,7 +91,9 @@ export function Calculator() {
       return
     }
 
-    const materialTypeLabel = materials.find(([, b]) => b === materialType)?.[0]
+    const materialTypeLabel = materials.find(
+      ({ slug }) => slug === materialType,
+    )?.label
 
     if (!materialTypeLabel) {
       return
@@ -148,7 +133,9 @@ export function Calculator() {
     }
 
     for (const [material, amount] of preset.resources) {
-      const materialLabel = materials.find(([, b]) => b === material)?.[0]
+      const materialLabel = materials.find(
+        ({ slug }) => slug === material,
+      )?.label
 
       if (!materialLabel) {
         return
