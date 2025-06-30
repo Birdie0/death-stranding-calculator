@@ -38,7 +38,9 @@ export function Repair() {
 
   const results = useMemo(() => {
     return repairMaterials.map((material) => {
-      const materialLabel = materials.find(([, b]) => b === material)?.[0]
+      const materialLabel = materials.find(
+        ({ slug }) => slug === material,
+      )?.label
 
       return [
         materialLabel,

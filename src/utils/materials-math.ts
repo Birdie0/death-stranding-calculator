@@ -3,15 +3,15 @@ import type { RequirementItem, ResourceItem } from '../types'
 const chunks = [20, 16, 12, 8, 4, 2, 1] as const
 
 export const materials = [
-  ['Ceramics', 'ceramics'],
-  ['Chemicals', 'chemicals'],
-  ['Chiral Crystals', 'chiral_crystals'],
-  ['Metals', 'metals'],
-  ['Resins', 'resins'],
-  ['Special Alloys', 'special_alloys'],
+  { label: 'Ceramics', slug: 'ceramics', hotkey: 'c' },
+  { label: 'Chemicals', slug: 'chemicals', hotkey: 'h' },
+  { label: 'Chiral Crystals', slug: 'chiral_crystals', hotkey: 'i' },
+  { label: 'Metals', slug: 'metals', hotkey: 'm' },
+  { label: 'Resins', slug: 'resins', hotkey: 'r' },
+  { label: 'Special Alloys', slug: 'special_alloys', hotkey: 's' },
 ] as const
 
-export type Material = (typeof materials)[number][1]
+export type Material = (typeof materials)[number]['slug']
 
 export interface Structure {
   name: string
