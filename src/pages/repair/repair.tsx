@@ -13,7 +13,7 @@ import { durabilityPerLevel, structures } from '../../utils/structures'
 export function Repair() {
   const [durability, setDurability] = useState(0)
   const [selectedPreset, setSelectedPreset] = useState(
-    () => structures[0].items[0].name,
+    structures[0].items[0].name,
   )
 
   const currentPreset = useMemo(

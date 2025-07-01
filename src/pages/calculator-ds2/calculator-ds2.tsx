@@ -2,7 +2,7 @@ import type { FormEvent } from 'react'
 import { useEffect, useMemo, useState } from 'react'
 import { useShallow } from 'zustand/react/shallow'
 import { Details, Input, Select } from '../../components'
-import { useMemoryStore } from '../../stores/memory'
+import { useMemory2Store } from '../../stores/memory2'
 import type { RequirementItem } from '../../types'
 import { availablePresets, presetOptions } from '../../utils/data'
 import type { Material } from '../../utils/materials-math'
@@ -15,9 +15,9 @@ import {
 } from '../../utils/materials-math'
 import { structures } from '../../utils/structures'
 
-import styles from './calculator.module.css'
+import styles from './calculator-ds2.module.css'
 
-export function Calculator() {
+export function CalculatorDs2() {
   const [materialType, setMaterialType] = useState<Material>(materials[0].slug)
   const [provided, setProvided] = useState(0)
   const [required, setRequired] = useState(0)
@@ -26,7 +26,7 @@ export function Calculator() {
     structures[0].items[0].name,
   )
 
-  const [memory, addItem, removeItem, clearMemory] = useMemoryStore(
+  const [memory, addItem, removeItem, clearMemory] = useMemory2Store(
     useShallow((state) => [
       state.memory,
       state.addItem,
@@ -45,7 +45,7 @@ export function Calculator() {
 
   const remaining = Math.max(0, required - provided)
   const requirements = useMemo(
-    () => calculateRequirements(remaining, materialType),
+    () => calculateRequirements(remaining, materialType, 2),
     [materialType, remaining],
   )
 
@@ -119,7 +119,7 @@ export function Calculator() {
     clearMemory()
   }
 
-  const totals = useMemo(() => calculateTotals(memory), [memory])
+  const totals = useMemo(() => calculateTotals(memory, 2), [memory])
 
   function handlePreset(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
@@ -142,7 +142,7 @@ export function Calculator() {
         id: crypto.randomUUID(),
         material: materialLabel,
         total: amount,
-        resources: calculateRequirements(amount, material),
+        resources: calculateRequirements(amount, material, 2),
         note: selectedPreset,
       })
     }
@@ -150,7 +150,17 @@ export function Calculator() {
 
   return (
     <>
-      <h1>📦 Death Stranding Resources Calculator</h1>
+      <h1>📦 Death Stranding 2 Resources Calculator</h1>
+
+      <Details summary="Differences from Death Stranding 1 calculator">
+        Main QoL addition of Death Stranding 2 is adding more materials than
+        needed to structure no longer results in a loss of materials, instead
+        you receive remaining materials back in smallest possible container (for
+        example remaining 40 metals will be returned as S container, same as 50
+        would). This means bringing big containers is always better than smaller
+        ones as relative density of the biggest XL container is higher than
+        smaller ones. But it comes at price of not having XL1/2/3 available.
+      </Details>
 
       <Details summary="How to use?">
         <p>

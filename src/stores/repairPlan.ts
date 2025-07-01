@@ -17,13 +17,17 @@ export const useRepairPlanStore = create<RepairPlanState>()(
     persist(
       (set) => ({
         repairPlan: [],
-        clearRepairPlan: () => set(() => ({ repairPlan: [] })),
-        addItem: (value) =>
-          set((state) => ({ repairPlan: [...state.repairPlan, value] })),
-        removeItem: (id) =>
+        clearRepairPlan() {
+          set(() => ({ repairPlan: [] }))
+        },
+        addItem(value) {
+          set((state) => ({ repairPlan: [...state.repairPlan, value] }))
+        },
+        removeItem(id) {
           set((state) => ({
             repairPlan: state.repairPlan.filter((item) => item.id !== id),
-          })),
+          }))
+        },
       }),
       { name: 'repairPlanStore' },
     ),

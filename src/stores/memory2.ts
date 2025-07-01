@@ -9,7 +9,7 @@ interface MemoryState {
   clearMemory: () => void
 }
 
-export const useMemoryStore = create<MemoryState>()(
+export const useMemory2Store = create<MemoryState>()(
   devtools(
     persist(
       (set) => ({
@@ -27,9 +27,9 @@ export const useMemoryStore = create<MemoryState>()(
         },
       }),
       {
-        name: 'memoryStore',
+        name: 'memory2Store',
       },
     ),
-    { name: 'memoryStore' },
+    { name: 'memory2Store' },
   ),
 )

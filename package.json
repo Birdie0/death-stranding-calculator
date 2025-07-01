@@ -29,6 +29,9 @@
     "node": "22.x"
   },
   "pnpm": {
-    "onlyBuiltDependencies": ["@swc/core", "esbuild"]
+    "onlyBuiltDependencies": [
+      "@swc/core",
+      "esbuild"
+    ]
   }
 }

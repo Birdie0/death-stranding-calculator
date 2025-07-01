@@ -2,6 +2,7 @@ import { useHashLocation } from 'wouter/use-hash-location'
 
 const links = [
   ['Calculator', '/'],
+  ['Calculator (DS2)', '/ds2'],
   ['Repair (WIP)', '/repair'],
 ] as const
 
