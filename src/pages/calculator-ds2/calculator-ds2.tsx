@@ -212,7 +212,7 @@ export function CalculatorDs2() {
 
       <form onSubmit={handlePreset}>
         <fieldset>
-          <legend>Use structure preset</legend>
+          <legend>Use structure preset (reused from DS1, not verified)</legend>
 
           <Select
             label="Structure"
