@@ -1,10 +1,13 @@
-import type { FormEvent } from 'react'
+import type { SubmitEvent } from 'react'
 import { useEffect, useMemo, useState } from 'react'
 import { useShallow } from 'zustand/react/shallow'
 import { Details, Input, Select } from '../../components'
 import { useMemory2Store } from '../../stores/memory2'
 import type { RequirementItem } from '../../types'
-import { availablePresets, presetOptions } from '../../utils/data'
+import {
+  availablePresetsDS2 as availablePresets,
+  presetOptionsDS2 as presetOptions,
+} from '../../utils/data'
 import type { Material } from '../../utils/materials-math'
 import {
   calculateRequirements,
@@ -13,11 +16,11 @@ import {
   isApproximate,
   materials,
 } from '../../utils/materials-math'
-import { structures } from '../../utils/structures'
+import { structuresDS2 as structures } from '../../utils/structures'
 
 import styles from './calculator-ds2.module.css'
 
-export function CalculatorDs2() {
+export function CalculatorDS2() {
   const [materialType, setMaterialType] = useState<Material>(materials[0].slug)
   const [provided, setProvided] = useState(0)
   const [required, setRequired] = useState(0)
@@ -84,7 +87,7 @@ export function CalculatorDs2() {
     return () => document.removeEventListener('keydown', handleKeyDown)
   }, [])
 
-  function handleSave(event: FormEvent<HTMLFormElement>) {
+  function handleSave(event: SubmitEvent<HTMLFormElement>) {
     event.preventDefault()
 
     if (requirements.length === 0) {
@@ -121,7 +124,7 @@ export function CalculatorDs2() {
 
   const totals = useMemo(() => calculateTotals(memory, 2), [memory])
 
-  function handlePreset(event: FormEvent<HTMLFormElement>) {
+  function handlePreset(event: SubmitEvent<HTMLFormElement>) {
     event.preventDefault()
 
     const preset = availablePresets.get(selectedPreset)
@@ -159,7 +162,7 @@ export function CalculatorDs2() {
         example remaining 40 metals will be returned as S container, same as 50
         would). This means bringing big containers is always better than smaller
         ones as relative density of the biggest XL container is higher than
-        smaller ones. But it comes at price of not having XL1/2/3 available.
+        smaller ones.
       </Details>
 
       <Details summary="How to use?">
@@ -212,7 +215,7 @@ export function CalculatorDs2() {
 
       <form onSubmit={handlePreset}>
         <fieldset>
-          <legend>Use structure preset (reused from DS1, not verified)</legend>
+          <legend>Use structure preset</legend>
 
           <Select
             label="Structure"

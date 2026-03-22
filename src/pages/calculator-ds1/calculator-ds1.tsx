@@ -1,10 +1,13 @@
-import type { FormEvent } from 'react'
+import type { SubmitEvent } from 'react'
 import { useEffect, useMemo, useState } from 'react'
 import { useShallow } from 'zustand/react/shallow'
 import { Details, Input, Select } from '../../components'
 import { useMemoryStore } from '../../stores/memory'
 import type { RequirementItem } from '../../types'
-import { availablePresets, presetOptions } from '../../utils/data'
+import {
+  availablePresetsDS1 as availablePresets,
+  presetOptionsDS1 as presetOptions,
+} from '../../utils/data'
 import type { Material } from '../../utils/materials-math'
 import {
   calculateRequirements,
@@ -13,11 +16,11 @@ import {
   isApproximate,
   materials,
 } from '../../utils/materials-math'
-import { structures } from '../../utils/structures'
+import { structuresDS1 as structures } from '../../utils/structures'
 
-import styles from './calculator.module.css'
+import styles from './calculator-ds1.module.css'
 
-export function Calculator() {
+export function CalculatorDS1() {
   const [materialType, setMaterialType] = useState<Material>(materials[0].slug)
   const [provided, setProvided] = useState(0)
   const [required, setRequired] = useState(0)
@@ -84,7 +87,7 @@ export function Calculator() {
     return () => document.removeEventListener('keydown', handleKeyDown)
   }, [])
 
-  function handleSave(event: FormEvent<HTMLFormElement>) {
+  function handleSave(event: SubmitEvent<HTMLFormElement>) {
     event.preventDefault()
 
     if (requirements.length === 0) {
@@ -121,7 +124,7 @@ export function Calculator() {
 
   const totals = useMemo(() => calculateTotals(memory), [memory])
 
-  function handlePreset(event: FormEvent<HTMLFormElement>) {
+  function handlePreset(event: SubmitEvent<HTMLFormElement>) {
     event.preventDefault()
 
     const preset = availablePresets.get(selectedPreset)

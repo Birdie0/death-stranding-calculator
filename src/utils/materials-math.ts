@@ -4,8 +4,8 @@ import type {
   TotalRequirementItem,
 } from '../types'
 
-const chunksDs1 = [20, 16, 12, 8, 4, 2, 1] as const
-const chunksDs2 = [8, 4, 2, 1] as const
+const chunksDS1 = [20, 16, 12, 8, 4, 2, 1] as const
+const chunksDS2 = [8, 4, 2, 1] as const
 
 export const materials = [
   { label: 'Ceramics', slug: 'ceramics', hotkey: 'c' },
@@ -21,7 +21,6 @@ export type Material = (typeof materials)[number]['slug']
 export interface Structure {
   name: string
   resources: [Material, number][]
-  repairMaterials: Material[]
   level: number
 }
 
@@ -64,7 +63,7 @@ export function calculateRequirements(
   // count required number of chunks
   let remaining = amount
   remaining = Math.ceil(remaining / divider)
-  const chunks = gameVersion === 1 ? chunksDs1 : chunksDs2
+  const chunks = gameVersion === 1 ? chunksDS1 : chunksDS2
   for (const chunk of chunks) {
     if (remaining === 0) break
 

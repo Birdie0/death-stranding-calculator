@@ -1,1 +1,1 @@
-export { CalculatorDs2 } from './calculator-ds2'
+export { CalculatorDS2 } from './calculator-ds2'

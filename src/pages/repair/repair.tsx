@@ -1,14 +1,20 @@
-import type { FormEvent } from 'react'
+import type { SubmitEvent } from 'react'
 import { useMemo, useState } from 'react'
 import { Details, Input, Select } from '../../components'
-import { availablePresets, presetOptions } from '../../utils/data'
+import {
+  availablePresetsDS1 as availablePresets,
+  presetOptionsDS1 as presetOptions,
+} from '../../utils/data'
 import {
   calculateRequirements,
   formatResult,
   isApproximate,
   materials,
 } from '../../utils/materials-math'
-import { durabilityPerLevel, structures } from '../../utils/structures'
+import {
+  durabilityPerLevel,
+  structuresDS1 as structures,
+} from '../../utils/structures'
 
 export function Repair() {
   const [durability, setDurability] = useState(0)
@@ -22,12 +28,17 @@ export function Repair() {
   )
 
   const level = useMemo(() => currentPreset?.level ?? 1, [currentPreset])
-  const repairMaterials = useMemo(
-    () => currentPreset?.repairMaterials ?? [],
-    [currentPreset],
-  )
+  const repairMaterials = useMemo(() => {
+    let materials = currentPreset?.resources.map((res) => res[0])
+    if (!materials) {
+      return []
+    } else if (!materials.includes('chiral_crystals')) {
+      materials = ['chiral_crystals', ...materials]
+    }
+    return materials
+  }, [currentPreset])
 
-  function handlePreset(event: FormEvent<HTMLFormElement>) {
+  function handlePreset(event: SubmitEvent<HTMLFormElement>) {
     event.preventDefault()
   }
 
