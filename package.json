@@ -11,28 +11,22 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "react": "^19.2.4",
-    "react-dom": "^19.2.4",
+    "react": "^19.2.5",
+    "react-dom": "^19.2.5",
     "water.css": "^2.1.1",
     "wouter": "^3.9.0",
-    "zustand": "^5.0.12"
+    "zustand": "^5.0.13"
   },
   "devDependencies": {
-    "@biomejs/biome": "^2.4.8",
-    "@types/node": "^22.19.15",
+    "@biomejs/biome": "^2.4.14",
+    "@types/node": "^25.6.0",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^6.0.1",
-    "typescript": "~5.9.3",
-    "vite": "^8.0.1"
+    "typescript": "~6.0.3",
+    "vite": "^8.0.10"
   },
   "engines": {
-    "node": "22.x"
-  },
-  "pnpm": {
-    "onlyBuiltDependencies": [
-      "@swc/core",
-      "esbuild"
-    ]
+    "node": "24.x"
   }
 }
